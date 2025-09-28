@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: tempoapp
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+api:
+  openaq:
+    url: https://api.openaq.org
+    key: c8b27cfee48f95653149806366add1b06f9598693bfc293fdaf5d77d0ea80eba
+
