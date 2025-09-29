@@ -1,9 +1,7 @@
 package com.andy.tempoapp.controller;
 
 
-import com.andy.tempoapp.dto.response.LatestMeasureDto;
-import com.andy.tempoapp.dto.response.LocationDto;
-import com.andy.tempoapp.dto.response.SensorsDto;
+import com.andy.tempoapp.dto.response.*;
 import com.andy.tempoapp.service.client.OpenAQRestClient;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -22,9 +20,21 @@ public class OpenAQController {
     private OpenAQRestClient openAQRestClient;
 
 
+
+    @GetMapping("/locations")
+    public LocationFromPosDto getLocationFromPos(
+            @RequestParam(required = false) String coordinates,
+            @RequestParam(required = false) Integer radius,
+            @RequestParam(required = false) String bbox,
+            @RequestParam int limit,
+            @RequestParam int page
+    ){
+        return openAQRestClient.getLocationFromPosition(coordinates, radius, bbox, limit, page);
+    }
+
     @GetMapping("/locations/{locationsId}")
-    public LocationDto getLocationById(@PathVariable("locationsId") String locationsId) {
-        return openAQRestClient.getLocationById(locationsId);
+    public SingleLocationDto getLocationById(@PathVariable("locationsId") String locationsId) {
+        return openAQRestClient.getLocationByLocationId(locationsId);
     }
 
     @GetMapping("/locations/{locationsId}/sensors")
@@ -35,17 +45,56 @@ public class OpenAQController {
     @GetMapping("/locations/{locationsId}/latest")
     public LatestMeasureDto getLatestMeasureById(
             @PathVariable("locationsId") String locationsId,
-            @RequestParam(value = "limit", required = false) @Min(1) Integer limit,
-            @RequestParam(value = "page", required = false) @Min(1) Integer page,
-            @RequestParam(value = "datetime_min", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeMin
+            @RequestParam(value = "limit", required = true) @Min(1) Integer limit,
+            @RequestParam(value = "page", required = true) @Min(1) Integer page,
+            @RequestParam(value = "datetime_min", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeMin
             ) {
-        if (limit != null || page != null || dateTimeMin != null) {
-            return openAQRestClient.getLatestMeasureById(locationsId, limit, page, dateTimeMin);
-
-        }
-
-        return openAQRestClient.getLatestMeasureById(locationsId);
+            return openAQRestClient.getLatestMeasureByLocationId(locationsId, limit, page, dateTimeMin);
     }
 
+    @GetMapping("/sensors/{sensorId}/hours")
+    public MeasurementDto getHourlyMeasurementBySensorId(
+            @PathVariable("sensorId") String sensorId,
+            @RequestParam(value = "datetime_from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeFrom,
+            @RequestParam(value = "datetime_to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeTo,
+            @RequestParam(value = "limit", required = true) @Min(1) int limit,
+            @RequestParam(value = "page", required = true) @Min(1) int page
+    ){
+        return openAQRestClient.getHourlyMeasurementBySensorId(sensorId, dateTimeFrom, dateTimeTo, limit, page);
+    }
+
+
+    @GetMapping("/sensors/{sensorId}/hours/daily")
+    public MeasurementDto getDailyMeasurementBySensorId(
+            @PathVariable("sensorId") String sensorId,
+            @RequestParam(value = "datetime_from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeFrom,
+            @RequestParam(value = "datetime_to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeTo,
+            @RequestParam(value = "limit", required = true) @Min(1) int limit,
+            @RequestParam(value = "page", required = true) @Min(1) int page
+    ){
+        return openAQRestClient.getDailyMeasurementBySensorId(sensorId, dateTimeFrom, dateTimeTo, limit, page);
+    }
+
+    @GetMapping("/sensors/{sensorId}/hours/monthly")
+    public MeasurementDto getMonthlyMeasurementBySensorId(
+            @PathVariable("sensorId") String sensorId,
+            @RequestParam(value = "datetime_from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeFrom,
+            @RequestParam(value = "datetime_to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeTo,
+            @RequestParam(value = "limit", required = true) @Min(1) int limit,
+            @RequestParam(value = "page", required = true) @Min(1) int page
+    ){
+        return openAQRestClient.getMonthlyMeasurementBySensorId(sensorId, dateTimeFrom, dateTimeTo, limit, page);
+    }
+
+    @GetMapping("/sensors/{sensorId}/hours/yearly")
+    public MeasurementDto getYearlyMeasurementBySensorId(
+            @PathVariable("sensorId") String sensorId,
+            @RequestParam(value = "datetime_from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeFrom,
+            @RequestParam(value = "datetime_to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant dateTimeTo,
+            @RequestParam(value = "limit", required = true) @Min(1) int limit,
+            @RequestParam(value = "page", required = true) @Min(1) int page
+    ){
+        return openAQRestClient.getYearlyMeasurementBySensorId(sensorId, dateTimeFrom, dateTimeTo, limit, page);
+    }
 
 }

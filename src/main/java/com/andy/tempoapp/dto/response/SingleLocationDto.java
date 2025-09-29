@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class LocationDto {
+public class SingleLocationDto {
 	private Meta meta;
 	private List<ResultsItem> results;
 
