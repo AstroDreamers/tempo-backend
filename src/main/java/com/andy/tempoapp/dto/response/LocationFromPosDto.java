@@ -1,26 +1,32 @@
 package com.andy.tempoapp.dto.response;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationFromPosDto{
 	private Meta meta;
 	private List<ResultsItem> results;
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Attribution{
 		private String name;
 		private Object url;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Coordinates{
 		private Object latitude;
 		private Object longitude;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Country{
 		private String code;
 		private String name;
@@ -28,24 +34,28 @@ public class LocationFromPosDto{
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DatetimeFirst{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DatetimeLast{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class InstrumentsItem{
 		private String name;
 		private int id;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class LicensesItem{
 		private String name;
 		private Attribution attribution;
@@ -55,21 +65,24 @@ public class LocationFromPosDto{
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Meta{
 		private String website;
-		private int found;
+		private String found;
 		private String name;
 		private int limit;
 		private int page;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Owner{
 		private String name;
 		private int id;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Parameter{
 		private String displayName;
 		private String name;
@@ -78,12 +91,14 @@ public class LocationFromPosDto{
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Provider{
 		private String name;
 		private int id;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class ResultsItem{
 		private Owner owner;
 		private Country country;
@@ -105,6 +120,7 @@ public class LocationFromPosDto{
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class SensorsItem{
 		private Parameter parameter;
 		private String name;

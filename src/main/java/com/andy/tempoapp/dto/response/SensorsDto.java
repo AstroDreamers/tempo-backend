@@ -1,20 +1,25 @@
 package com.andy.tempoapp.dto.response;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SensorsDto {
 	private Meta meta;
 	private List<ResultsItem> results;
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Coordinates{
 		private Object latitude;
 		private Object longitude;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Coverage{
 		private int percentCoverage;
 		private int expectedCount;
@@ -27,36 +32,42 @@ public class SensorsDto {
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Datetime{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DatetimeFirst{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DatetimeFrom{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DatetimeLast{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class DatetimeTo{
 		private String utc;
 		private String local;
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Latest{
 		private Datetime datetime;
 		private Coordinates coordinates;
@@ -64,6 +75,7 @@ public class SensorsDto {
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Meta{
 		private String website;
 		private int found;
@@ -73,6 +85,7 @@ public class SensorsDto {
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Parameter{
 		private String displayName;
 		private String name;
@@ -81,6 +94,7 @@ public class SensorsDto {
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class ResultsItem{
 		private Coverage coverage;
 		private Summary summary;
@@ -93,6 +107,7 @@ public class SensorsDto {
 	}
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Summary{
 		private Object q98;
 		private Object sd;

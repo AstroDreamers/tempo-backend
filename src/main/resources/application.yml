@@ -1,6 +1,18 @@
 spring:
   application:
     name: tempoapp
+  ai:
+    openai:
+      api-key: ${OPENAI-KEY}
+      chat:
+        options:
+          model: gpt-3.5-turbo
+          temperature: 1
+
+  cache:
+    cache-names: analysisCache
+    caffeine:
+      spec: expireAfterWrite=1h
 
 springdoc:
   swagger-ui:
