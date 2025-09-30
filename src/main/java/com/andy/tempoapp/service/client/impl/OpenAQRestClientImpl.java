@@ -3,10 +3,12 @@ package com.andy.tempoapp.service.client.impl;
 import com.andy.tempoapp.dto.response.*;
 import com.andy.tempoapp.service.client.OpenAQRestClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -24,10 +26,10 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                         .build();
     }
 
-
+    @Async
     @Override
-    public LocationFromPosDto getLocationFromPosition(String coordinates, Integer radius, String bbox, int limit, int page) {
-        return restClient.get()
+    public CompletableFuture<LocationFromPosDto> getLocationFromPosition(String coordinates, Integer radius, String bbox, int limit, int page) {
+        LocationFromPosDto result =  restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/v3/locations")
@@ -45,29 +47,34 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                 })
                 .retrieve()
                 .body(LocationFromPosDto.class);
+        return CompletableFuture.completedFuture(result);
     }
 
-
-    public SingleLocationDto getLocationByLocationId(String locationsId) {
-        return restClient.get()
+    @Async
+    @Override
+    public CompletableFuture<SingleLocationDto> getLocationByLocationId(String locationsId) {
+        SingleLocationDto result = restClient.get()
                 .uri("/v3/locations/{locationsId}",  locationsId)
                 .retrieve()
                 .body(SingleLocationDto.class);
+        return CompletableFuture.completedFuture(result);
     }
 
+    @Async
     @Override
-    public SensorsDto getSensorsByLocationId(String locationsId) {
-        return restClient.get()
+    public CompletableFuture<SensorsDto> getSensorsByLocationId(String locationsId) {
+        SensorsDto result = restClient.get()
                 .uri("/v3/locations/{locations_id}/sensors", locationsId)
                 .retrieve()
                 .body(SensorsDto.class);
+        return CompletableFuture.completedFuture(result);
     }
 
 
-
+    @Async
     @Override
-    public LatestMeasureDto getLatestMeasureByLocationId(String locationsId, int limit, int page, Instant dateTimeMin) {
-        return restClient.get()
+    public CompletableFuture<LatestMeasureDto> getLatestMeasureByLocationId(String locationsId, int limit, int page, Instant dateTimeMin) {
+        LatestMeasureDto result = restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/v3/locations/{locations_id}/latest")
@@ -80,11 +87,13 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                 })
                 .retrieve()
                 .body(LatestMeasureDto.class);
+        return  CompletableFuture.completedFuture(result);
     }
 
+    @Async
     @Override
-    public MeasurementDto getHourlyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
-        return restClient.get()
+    public CompletableFuture<MeasurementDto> getHourlyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
+        MeasurementDto result = restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/v3/sensors/{sensors_id}/hours")
@@ -96,11 +105,13 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                 })
                 .retrieve()
                 .body(MeasurementDto.class);
+        return CompletableFuture.completedFuture(result);
     }
 
+    @Async
     @Override
-    public MeasurementDto getDailyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
-        return restClient.get()
+    public CompletableFuture<MeasurementDto> getDailyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
+        MeasurementDto result = restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/v3/sensors/{sensors_id}/hours/daily")
@@ -112,11 +123,13 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                 })
                 .retrieve()
                 .body(MeasurementDto.class);
+        return CompletableFuture.completedFuture(result);
     }
 
+    @Async
     @Override
-    public MeasurementDto getMonthlyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
-        return restClient.get()
+    public CompletableFuture<MeasurementDto> getMonthlyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
+        MeasurementDto result =  restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/v3/sensors/{sensors_id}/hours/monthly")
@@ -127,11 +140,14 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                     return builder.build(sensorsId);
                 })
                 .retrieve()
-                .body(MeasurementDto.class);    }
+                .body(MeasurementDto.class);
+        return CompletableFuture.completedFuture(result);
+    }
 
+    @Async
     @Override
-    public MeasurementDto getYearlyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
-        return restClient.get()
+    public CompletableFuture<MeasurementDto> getYearlyMeasurementBySensorId(String sensorsId, Instant dateTimeFrom, Instant dateTimeTo, int limit, int page) {
+        MeasurementDto result = restClient.get()
                 .uri(uriBuilder -> {
                     var builder = uriBuilder
                             .path("/v3/sensors/{sensors_id}/hours/yearly")
@@ -142,5 +158,8 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
                     return builder.build(sensorsId);
                 })
                 .retrieve()
-                .body(MeasurementDto.class);     }
+                .body(MeasurementDto.class);
+        return CompletableFuture.completedFuture(result);
+    }
+
 }
