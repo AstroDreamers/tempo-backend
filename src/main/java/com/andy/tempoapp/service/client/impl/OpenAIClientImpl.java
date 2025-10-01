@@ -1,6 +1,6 @@
 package com.andy.tempoapp.service.client.impl;
 
-import com.andy.tempoapp.dto.request.AnalysisRequestDto;
+import com.andy.tempoapp.dto.request.AnalysisRequest;
 import com.andy.tempoapp.service.client.OpenAIClient;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,6 +17,10 @@ public class OpenAIClientImpl implements OpenAIClient {
         this.chatClient = chatClientBuilder.build();
     }
 
+
+
+
+
     @Async
     @Override
     @Cacheable(
@@ -24,7 +28,7 @@ public class OpenAIClientImpl implements OpenAIClient {
             key = "#analysisRequestDto.latitude + '_' + #analysisRequestDto.longitude + '_' + #analysisRequestDto.parameterName",
             unless = "#result == null"
     )
-    public CompletableFuture<String> askWithData(AnalysisRequestDto analysisRequestDto) {
+    public CompletableFuture<String> askWithData(AnalysisRequest analysisRequestDto) {
         if( analysisRequestDto.getJsonData().isEmpty()) {
             return  CompletableFuture.completedFuture("There is no data to ask!");
         }
@@ -41,7 +45,7 @@ public class OpenAIClientImpl implements OpenAIClient {
                 "Your response should be about 3 sentences with bulletpoint, concise, clear, and suitable for non-experts.";
         // Format jsonData as a readable string for the prompt
         StringBuilder dataBuilder = new StringBuilder();
-        for (AnalysisRequestDto.TimeSeriesData data : analysisRequestDto.getJsonData()) {
+        for (AnalysisRequest.TimeSeriesData data : analysisRequestDto.getJsonData()) {
             dataBuilder.append(String.format("(%s, %.2e)\n", data.getTimestamp(), data.getValue()));
         }
 
@@ -62,6 +66,41 @@ public class OpenAIClientImpl implements OpenAIClient {
                 .call()
                 .content();
 
+        return CompletableFuture.completedFuture(response);
+    }
+
+
+    @Async
+    @Override
+    @Cacheable(
+            value = "conversationCache",
+            key = "#chat.trim().toLowerCase()",
+            unless = "#chat.length() > 50 || #result == null"
+    )
+    public CompletableFuture<String> conversation(String chat) {
+
+        if (chat.length() > 500) {
+            return CompletableFuture.completedFuture("The question is too long!");
+        }
+
+        if (chat == null ||  chat.equals("")) {
+            return CompletableFuture.completedFuture("The question is empty!");
+        }
+
+
+        String basePrompt = "You are an expert in atmospheric science." +
+                "Your job is to answer or discuss only about amotspheric science." +
+                "For unrelated question, please say: Sorry, i do not know about this!" +
+                "Your response should be 2-3 sentences, consise, clear and do not use too many jargons, but rather explain simply." +
+                "Here is the user chat: ";
+
+
+        String prompt  = basePrompt + chat;
+
+        String response = chatClient
+                .prompt(prompt)
+                .call()
+                .content();
         return CompletableFuture.completedFuture(response);
     }
 }

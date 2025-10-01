@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AnalysisRequestDto {
+public class AnalysisRequest {
     private String locationName;
     private double latitude;
     private double longitude;
