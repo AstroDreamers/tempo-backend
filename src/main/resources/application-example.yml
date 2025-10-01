@@ -3,16 +3,20 @@ spring:
     name: tempoapp
   ai:
     openai:
-      api-key: ${OPENAI-KEY}
+      api-key: ${OPENAI-API-KEY}
       chat:
         options:
           model: gpt-3.5-turbo
           temperature: 1
-
   cache:
-    cache-names: analysisCache
-    caffeine:
-      spec: expireAfterWrite=1h
+    caches:
+      analysisCache:
+        caffeine:
+          spec: expireAfterWrite=1h
+      conversationCache:
+        caffeine:
+          spec: expireAfterWrite=30m
+
 
 springdoc:
   swagger-ui:
@@ -21,5 +25,5 @@ springdoc:
 api:
   openaq:
     url: https://api.openaq.org
-    key: c8b27cfee48f95653149806366add1b06f9598693bfc293fdaf5d77d0ea80eba
+    key: ${OPENAQ-API-KEY}
 
