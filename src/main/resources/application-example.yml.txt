@@ -16,6 +16,11 @@ spring:
       conversationCache:
         caffeine:
           spec: expireAfterWrite=30m
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tempo
+    username: <Your username>
+    password: <Your password>
+    driver-class-name: org.postgresql.Driver
 
 
 springdoc:
