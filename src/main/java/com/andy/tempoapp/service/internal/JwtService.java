@@ -1,4 +1,4 @@
-package com.andy.tempoapp.service.client;
+package com.andy.tempoapp.service.internal;
 
 
 
@@ -24,7 +24,7 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.expiration-time")
+    @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
 
@@ -78,7 +78,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + + jwtExpiration) )
-                .signWith(getSigningKey(), SignatureAlgorithm.ES256)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 

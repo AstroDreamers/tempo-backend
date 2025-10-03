@@ -14,11 +14,11 @@ public class EmailConfiguration {
     @Value("${spring.mail.username}")
     private String emailUsername;
 
-    @Value("${spring.mail.password")
+    @Value("${spring.mail.password}")
     private String password;
     
     @Bean
-    public JavaMailSender JavaMailSender() {
+    public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);

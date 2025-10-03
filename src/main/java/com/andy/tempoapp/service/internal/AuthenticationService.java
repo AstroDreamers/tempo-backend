@@ -1,15 +1,13 @@
-package com.andy.tempoapp.service.client;
+package com.andy.tempoapp.service.internal;
 
-import com.andy.tempoapp.dto.LoginUserDto;
-import com.andy.tempoapp.dto.RegisterUserDto;
-import com.andy.tempoapp.dto.VerifyUserDto;
+import com.andy.tempoapp.dto.request.LoginUserDto;
+import com.andy.tempoapp.dto.request.RegisterUserDto;
+import com.andy.tempoapp.dto.request.VerifyUserDto;
 import com.andy.tempoapp.entity.User;
 import com.andy.tempoapp.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import org.springframework.cglib.core.Local;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

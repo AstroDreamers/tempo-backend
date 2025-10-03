@@ -1,6 +1,6 @@
 package com.andy.tempoapp.config;
 
-import com.andy.tempoapp.service.client.JwtService;
+import com.andy.tempoapp.service.internal.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

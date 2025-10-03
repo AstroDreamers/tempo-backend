@@ -1,4 +1,4 @@
-package com.andy.tempoapp.dto;
+package com.andy.tempoapp.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

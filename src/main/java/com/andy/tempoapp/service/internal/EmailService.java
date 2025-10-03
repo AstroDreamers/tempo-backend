@@ -1,4 +1,4 @@
-package com.andy.tempoapp.service.client;
+package com.andy.tempoapp.service.internal;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
