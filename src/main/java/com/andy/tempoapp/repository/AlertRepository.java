@@ -13,4 +13,8 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
     List<Alert> findBySubscriptionId(Long subscriptionId);
 
     void deleteBySubscriptionIdAndSensorId(Long subscriptionId, String sensorId);
+
+    List<Alert> findByAlertEnabledTrue();
+
+    List<Alert> findBySubscriptionUserId(Long userId);
 }

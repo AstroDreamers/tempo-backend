@@ -31,34 +31,4 @@ public class UserService {
     }
 
 
-    @Transactional
-    public Subscription subscribe(Long userId, String locationId, Double lat, Double lon) {
-
-        // Check if already subscribed
-        if (subscriptionRepository.existsByUserIdAndLocationId(userId, locationId)) {
-            throw new IllegalArgumentException("Already subscribed to this location");
-        }
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        // Create subscription WITHOUT alerts
-        Subscription subscription = new Subscription();
-        subscription.setUser(user);
-        subscription.setLocationId(locationId);
-        subscription.setLat(lat);
-        subscription.setLon(lon);
-
-        return subscriptionRepository.save(subscription);
-    }
-
-    @Transactional
-    public void unsubscribe(Long userId, String locationId) {
-        Subscription subscription = subscriptionRepository
-                .findByUserIdAndLocationId(userId, locationId)
-                .orElseThrow(() -> new IllegalArgumentException("Subscription not found"));
-        subscription.getUser().getSubscriptions().remove(subscription);
-        subscription.setUser(null);
-        subscriptionRepository.delete(subscription);
-    }
 }
