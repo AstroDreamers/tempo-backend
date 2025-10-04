@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @AllArgsConstructor
 @Validated
-@RequestMapping("oa")
+@RequestMapping("/oa")
 public class OpenAQController {
 
     private OpenAQRestClient openAQRestClient;

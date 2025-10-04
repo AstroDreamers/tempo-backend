@@ -28,9 +28,18 @@ public class User implements UserDetails {
 
     @Column(name = "verification_code")
     private String verificationCode;
+
     @Column(name = "verification_expiration")
     private LocalDateTime verificationCodeExpiresAt;
+
     private boolean enabled;
+
+    private boolean hasSubscriptions = false;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Subscription> subscriptions;
+
+
 
     //constructor for creating an unverified user
     public User(String username, String email, String password) {

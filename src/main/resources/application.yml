@@ -16,6 +16,9 @@ spring:
       conversationCache:
         caffeine:
           spec: expireAfterWrite=30m
+      singleLocationCache:
+        caffeine:
+          spec: expireAfterWrite=2h
   datasource:
     url: jdbc:postgresql://localhost:5432/tempo
     username: ${SPRING_DATASOURCE_USERNAME}

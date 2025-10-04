@@ -3,6 +3,7 @@ package com.andy.tempoapp.service.client.impl;
 import com.andy.tempoapp.dto.response.*;
 import com.andy.tempoapp.service.client.OpenAQRestClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -52,6 +53,11 @@ public class OpenAQRestClientImpl implements OpenAQRestClient {
 
     @Async
     @Override
+    @Cacheable(
+            value = "singleLocationCache",
+            key = "#locationsId",
+            unless = "#result == null"
+    )
     public CompletableFuture<SingleLocationDto> getLocationByLocationId(String locationsId) {
         SingleLocationDto result = restClient.get()
                 .uri("/v3/locations/{locationsId}",  locationsId)
