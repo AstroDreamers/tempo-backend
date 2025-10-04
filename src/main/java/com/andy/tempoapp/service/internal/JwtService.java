@@ -72,12 +72,20 @@ public class JwtService {
     private String buildToken(Map<String, Object> extraClaims,
                               UserDetails userDetails,
                               long jwtExpiration) {
+        Date issuedAt = new Date(System.currentTimeMillis());
+        Date expiresAt = new Date(System.currentTimeMillis() + jwtExpiration);
+
+        System.out.println("Creating token:");
+        System.out.println("Issued at: " + issuedAt);
+        System.out.println("Expires at: " + expiresAt);
+        System.out.println("Expiration time (ms): " + jwtExpiration);
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + + jwtExpiration) )
+                .setIssuedAt(issuedAt)
+                .setExpiration(expiresAt)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

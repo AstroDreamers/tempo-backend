@@ -24,9 +24,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(HandlerExceptionResolver handlerExceptionResolver, JwtService jwtService) {
+    public JwtAuthenticationFilter(HandlerExceptionResolver handlerExceptionResolver, JwtService jwtService, UserDetailsService userDetailsService) {
         this.handlerExceptionResolver = handlerExceptionResolver;
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
@@ -47,7 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             final String jwt = authHeader.substring(7);
+
             final String userEmail = jwtService.extractUsername(jwt);
+
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -64,7 +66,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
+            String message = extractRootMessage(e);
+            System.out.println("Exception in filter: " + message);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("text/plain;charset=UTF-8");
+            response.getWriter().write(message);
             handlerExceptionResolver.resolveException(request, response, null, e);
         }
     };
+
+    private String extractRootMessage(Throwable t) {
+        Throwable root = t;
+        while (root.getCause() != null) {
+            root = root.getCause();
+        }
+        String msg = root.getMessage();
+        return msg != null ? msg : (t.getMessage() != null ? t.getMessage() : "Unexpected error");
+    }
 }

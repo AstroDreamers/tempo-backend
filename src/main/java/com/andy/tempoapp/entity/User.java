@@ -1,6 +1,7 @@
 package com.andy.tempoapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,20 +19,33 @@ import java.util.List;
 @Setter
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false)
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
+
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "verification_code")
+    @JsonIgnore
     private String verificationCode;
+
     @Column(name = "verification_expiration")
+    @JsonIgnore
     private LocalDateTime verificationCodeExpiresAt;
+
+    @JsonIgnore
     private boolean enabled;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Subscription> subscriptions = new ArrayList<>();
+
+
 
     //constructor for creating an unverified user
     public User(String username, String email, String password) {
@@ -41,6 +56,17 @@ public class User implements UserDetails {
     //default constructor
     public User(){
     }
+
+
+    @Override
+    public String getUsername() {
+        return this.email; // ✅ Return email for authentication
+    }
+
+    public String getDisplayUsername() {
+        return this.username;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
