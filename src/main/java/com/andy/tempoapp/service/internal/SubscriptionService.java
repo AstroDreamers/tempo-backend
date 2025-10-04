@@ -1,40 +1,34 @@
 package com.andy.tempoapp.service.internal;
 
-
-
+import com.andy.tempoapp.dto.response.SubscriptionResponse;
 import com.andy.tempoapp.entity.Subscription;
 import com.andy.tempoapp.entity.User;
+import com.andy.tempoapp.mapper.DtoMapper;
 import com.andy.tempoapp.repository.SubscriptionRepository;
 import com.andy.tempoapp.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService {
+public class SubscriptionService {
 
-    private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final UserRepository userRepository;
+    private final DtoMapper mapper;
 
-    public UserService(SubscriptionRepository subscriptionRepository, UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public SubscriptionService(
+            SubscriptionRepository subscriptionRepository,
+            UserRepository userRepository,
+            DtoMapper mapper) {
         this.subscriptionRepository = subscriptionRepository;
-
+        this.userRepository = userRepository;
+        this.mapper = mapper;
     }
-
-    public List<User> allUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
-    }
-
 
     @Transactional
-    public Subscription subscribe(Long userId, String locationId, Double lat, Double lon) {
-
-        // Check if already subscribed
+    public SubscriptionResponse subscribe(Long userId, String locationId, Double lat, Double lon) {
         if (subscriptionRepository.existsByUserIdAndLocationId(userId, locationId)) {
             throw new IllegalArgumentException("Already subscribed to this location");
         }
@@ -42,14 +36,14 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Create subscription WITHOUT alerts
         Subscription subscription = new Subscription();
         subscription.setUser(user);
         subscription.setLocationId(locationId);
         subscription.setLat(lat);
         subscription.setLon(lon);
 
-        return subscriptionRepository.save(subscription);
+        Subscription saved = subscriptionRepository.save(subscription);
+        return mapper.toSubscriptionResponse(saved);
     }
 
     @Transactional
@@ -60,5 +54,17 @@ public class UserService {
         subscription.getUser().getSubscriptions().remove(subscription);
         subscription.setUser(null);
         subscriptionRepository.delete(subscription);
+    }
+
+    public List<SubscriptionResponse> getUserSubscriptions(Long userId) {
+        List<Subscription> subscriptions = subscriptionRepository.findByUserIdWithAlerts(userId);
+        return mapper.toSubscriptionResponseList(subscriptions);
+    }
+
+    public SubscriptionResponse getSubscription(Long userId, String locationId) {
+        Subscription subscription = subscriptionRepository
+                .findByUserIdAndLocationId(userId, locationId)
+                .orElseThrow(() -> new IllegalArgumentException("Subscription not found"));
+        return mapper.toSubscriptionResponse(subscription);
     }
 }

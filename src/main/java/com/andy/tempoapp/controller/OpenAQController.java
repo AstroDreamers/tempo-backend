@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
-@CrossOrigin(origins = "*")
 @RestController
 @AllArgsConstructor
 @Validated
