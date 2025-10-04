@@ -71,7 +71,7 @@ public class SensorsDto {
 	public static class Latest{
 		private Datetime datetime;
 		private Coordinates coordinates;
-		private Object value;
+		private Double value;
 	}
 
 	@Data
