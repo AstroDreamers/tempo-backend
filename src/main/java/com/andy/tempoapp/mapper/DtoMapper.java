@@ -29,6 +29,7 @@ public class DtoMapper {
         SubscriptionResponse response = new SubscriptionResponse();
         response.setId(subscription.getId());
         response.setLocationId(subscription.getLocationId());
+        response.setLocationName(subscription.getLocationName());
         response.setLat(subscription.getLat());
         response.setLon(subscription.getLon());
 

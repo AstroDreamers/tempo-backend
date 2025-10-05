@@ -39,6 +39,7 @@ public class SubscriptionService {
         Subscription subscription = new Subscription();
         subscription.setUser(user);
         subscription.setLocationId(locationId);
+        subscription.setLocationName(locationName);
         subscription.setLat(lat);
         subscription.setLon(lon);
 

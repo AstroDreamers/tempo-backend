@@ -8,6 +8,7 @@ import java.util.List;
 public class SubscriptionResponse {
     private Long id;
     private String locationId;
+    private String locationName;
     private Double lat;
     private Double lon;
     private List<AlertResponse> alerts;

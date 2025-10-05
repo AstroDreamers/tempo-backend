@@ -28,6 +28,9 @@ public class Subscription {
 
     private String locationId;
 
+    @Column(name = "location_name")
+    private String locationName; // new field
+
     @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Alert> alerts = new ArrayList<>();
 
