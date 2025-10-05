@@ -14,5 +14,8 @@ public class SubscriptionRequest {
     private Double lat;
 
     @NotNull
+    private String locationName;
+
+    @NotNull
     private Double lon;
 }
