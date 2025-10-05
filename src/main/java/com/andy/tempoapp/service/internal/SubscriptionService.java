@@ -28,7 +28,7 @@ public class SubscriptionService {
     }
 
     @Transactional
-    public SubscriptionResponse subscribe(Long userId, String locationId, Double lat, Double lon) {
+    public SubscriptionResponse subscribe(Long userId, String locationId, String locationName, Double lat, Double lon) {
         if (subscriptionRepository.existsByUserIdAndLocationId(userId, locationId)) {
             throw new IllegalArgumentException("Already subscribed to this location");
         }

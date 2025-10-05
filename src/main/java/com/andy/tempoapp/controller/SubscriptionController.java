@@ -6,7 +6,6 @@ import com.andy.tempoapp.dto.request.SubscriptionRequest;
 import com.andy.tempoapp.dto.response.SubscriptionResponse;
 import com.andy.tempoapp.entity.User;
 import com.andy.tempoapp.service.internal.SubscriptionService;
-import com.andy.tempoapp.service.internal.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,6 +46,7 @@ public class SubscriptionController {
         SubscriptionResponse subscription = subscriptionService.subscribe(
                 user.getId(),
                 subscriptionRequest.getLocationId(),
+                subscriptionRequest.getLocationName(),
                 subscriptionRequest.getLat(),
                 subscriptionRequest.getLon()
         );

@@ -2,6 +2,7 @@ package com.andy.tempoapp.controller;
 
 
 import com.andy.tempoapp.dto.request.SubscriptionRequest;
+import com.andy.tempoapp.dto.response.CurrentUserResponseDto;
 import com.andy.tempoapp.entity.Subscription;
 import com.andy.tempoapp.entity.User;
 import com.andy.tempoapp.service.internal.UserService;
@@ -23,10 +24,13 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> getCurrentAuthenticatedUser() {
+    public ResponseEntity<CurrentUserResponseDto> getCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        return ResponseEntity.ok(currentUser);
+        CurrentUserResponseDto currentUserResponseDto = new CurrentUserResponseDto();
+        currentUserResponseDto.setUsername(currentUser.getDisplayUsername());
+        currentUserResponseDto.setEmail(currentUser.getEmail());
+        return ResponseEntity.ok(currentUserResponseDto);
     }
 
 }
