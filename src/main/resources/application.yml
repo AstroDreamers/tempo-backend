@@ -17,9 +17,9 @@ spring:
         caffeine:
           spec: expireAfterWrite=30m
   datasource:
-    url: jdbc:postgresql://localhost:5432/tempo
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/tempo}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
   mail:
@@ -36,9 +36,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
 
-  config:
-    import: file:.env[.properties]
+server:
+  port: ${PORT:8080}
 
 security:
   jwt:
@@ -54,8 +58,10 @@ api:
     url: https://api.openaq.org
     key: ${API_OPENAQ_KEY}
 
-
-
 prediction:
   service:
-    base-url: http://localhost:5000
+    base-url: ${PREDICTION_SERVICE_URL:https://tempo-ml-lab-1.onrender.com}
+
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
