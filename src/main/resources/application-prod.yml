@@ -60,7 +60,7 @@ api:
 
 prediction:
   service:
-    base-url: http://localhost:5000
+    base-url: ${PREDICTION_SERVICE_URL:https://tempo-ml-lab-1.onrender.com}
 
 
 cors:
