@@ -3,8 +3,6 @@
 
 A Spring Boot application that provides real-time air quality monitoring and personalized alert management by integrating NASA TEMPO satellite data with OpenAQ ground-based sensor measurements.
 
-**[IMAGE: System architecture diagram showing data flow from OpenAQ API → Backend → PostgreSQL → Frontend]**
-
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
